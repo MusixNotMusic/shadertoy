@@ -51,8 +51,8 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
         f = 1.0 - smoothstep(0.2, 0.4, r);
         col = mix(col, vec3(0.9, 0.6, 0.2), f);
 
-        a += 0.05 * fbm(20.0 * p);
-        // a += fbm(15.0 * p);
+        // a += 0.05 * fbm(20.0 * p);
+        a += fbm(15.0 * p);
         //眼白
         f = smoothstep(0.3, 1.0, fbm(vec2(20.0 * a, 6.0 * r)));
         col = mix(col, vec3(1.0), f);
