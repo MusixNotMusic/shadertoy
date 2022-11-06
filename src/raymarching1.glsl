@@ -6,12 +6,19 @@ float distance_from_sphere(vec3 p, vec3 c, float r) {
     return length(p - c) - r;
 }
 
+float sdBox( vec3 p, vec3 b )
+{
+    vec3 d = abs(p) - b;
+    return min(max(d.x,max(d.y,d.z)),0.0) + length(max(d,0.0));
+}
+
 float map_the_world(in vec3 p)
 {
-    float displacement = sin(5.0 * p.x) * sin(5.0 * p.y) * sin(5.0 * p.z) * 0.25;
+    // float displacement = sin(5.0 * p.x) * sin(5.0 * p.y) * sin(5.0 * p.z) * 0.25;
     float sphere_0 = distance_from_sphere(p, vec3(0.0), 1.0);
 
-    return sphere_0 + displacement;
+    return sphere_0;
+    // return sphere_0 + displacement;
 }
 
 vec3 calculate_normal(in vec3 p)
@@ -36,7 +43,7 @@ vec3 ray_march (vec3 ro, vec3 rd) {
     for (int i = 0; i < NUMBER_OF_STEPS; i ++) {
         vec3 current_position = ro + total_distance_traveled * rd;
 
-        float distance_to_closest = map_the_world(current_position);
+        float distance_to_closest = sdBox(current_position, vec3(0.5, 0.5, 0.5));
     
         if (distance_to_closest < MINIMUM_HIT_DISTANCE) 
         {
@@ -53,6 +60,7 @@ vec3 ray_march (vec3 ro, vec3 rd) {
         if (total_distance_traveled > MAXIMUM_TRACE_DISTANCE)
         {
             break;
+            // return vec3(1.0, 0.0, 0.0);
         }
         total_distance_traveled += distance_to_closest;
     }
