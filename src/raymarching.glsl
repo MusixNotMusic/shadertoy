@@ -363,7 +363,7 @@ vec2 map( in vec3 pos )
     if( sdBox( pos-vec3(0.0,0.3,-1.0),vec3(0.35,0.3,2.5) )<res.x )
     {
 	res = opU( res, vec2( sdCappedTorus((pos-vec3( 0.0,0.30, 1.0))*vec3(1,-1,1), vec2(0.866025,-0.5), 0.25, 0.05), 25.0) );
-    // res = opU( res, vec2( sdBoxFrame(    pos-vec3( 0.0,0.25, 0.0), vec3(0.3,0.25,0.2), 0.025 ), 16.9 ) );
+    res = opU( res, vec2( sdBoxFrame(    pos-vec3( 0.0,0.25, 0.0), vec3(0.3,0.25,0.2), 0.025 ), 16.9 ) );
 	res = opU( res, vec2( sdCone(        pos-vec3( 0.0,0.45,-1.0), vec2(0.6,0.8),0.45 ), 55.0 ) );
     res = opU( res, vec2( sdCappedCone(  pos-vec3( 0.0,0.25,-2.0), 0.25, 0.25, 0.1 ), 13.67 ) );
     res = opU( res, vec2( sdSolidAngle(  pos-vec3( 0.0,0.00,-3.0), vec2(3,4)/5.0, 0.4 ), 49.13 ) );
@@ -403,7 +403,7 @@ vec2 map( in vec3 pos )
 }
 
 // https://iquilezles.org/articles/boxfunctions
-vec2 iBox( in vec3 ro, in vec3 rd, in vec3 rad ) 
+vec2 iBox( in vec3 ro, in vec3 rd, in vec3 rad )
 {
     vec3 m = 1.0/rd;
     vec3 n = m*ro;
@@ -661,6 +661,8 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
         col = pow( col, vec3(0.4545) );
 
         tot += col;
+
+        // tot += clamp(vec3(p.x + 0.5, p.y + 0.5, p.x), vec3(0.0, 0.0, 0.0), vec3(1.0, 1.0, 1.0));
 #if AA>1
     }
     tot /= float(AA*AA);
