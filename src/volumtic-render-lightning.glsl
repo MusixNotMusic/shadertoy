@@ -19,16 +19,16 @@
 
 #if PERFORMANCE_MODE
 #define MAX_VOLUME_MARCH_STEPS 20
-#define MAX_VOLUME_LIGHT_MARCH_STEPS 4
-#define ABSORPTION_CUTOFF 0.25
-#define MARCH_MULTIPLIER 1.8
+#define MAX_VOLUME_LIGHT_MARCH_STEPS 10
+#define ABSORPTION_CUTOFF 0.01
+#define MARCH_MULTIPLIER 2.0
 #define LIGHT_ATTENUATION_FACTOR 2.0
-#define MAX_OPAQUE_SHADOW_MARCH_STEPS 10
+#define MAX_OPAQUE_SHADOW_MARCH_STEPS 25
 #else
 #define MAX_VOLUME_MARCH_STEPS 50
 #define MAX_VOLUME_LIGHT_MARCH_STEPS 25
 #define ABSORPTION_CUTOFF 0.01
-#define MARCH_MULTIPLIER 1.0
+#define MARCH_MULTIPLIER 2.0
 #define LIGHT_ATTENUATION_FACTOR 1.65
 #define MAX_OPAQUE_SHADOW_MARCH_STEPS 25
 #endif
@@ -227,7 +227,7 @@ Material GetMaterial(int materialID, vec3 position)
     
     if(materialID == CHECKER_FLOOR_MATERIAL_ID)
     {
-        vec2 uv = position.xz / 13.0;
+        vec2 uv = position.xz / 5.0;
         uv = vec2(uv.x < 0.0 ? abs(uv.x) + 1.0 : uv.x, uv.y < 0.0 ? abs(uv.y) + 1.0 : uv.y);
         if((int(uv.x) % 2 == 0 && int(uv.y) % 2 == 0) || (int(uv.x) % 2 == 1 && int(uv.y) % 2 == 1))
         {
@@ -334,6 +334,7 @@ float QueryVolumetricDistanceField( in vec3 pos)
     // merge it with ground plane to get some ground fog 
     // and viola! Big cloudy thingy!
     vec3 fbmCoord = (pos + 2.0 * vec3(iTime, 0.0, iTime)) / 1.5f;
+
     float sdfValue = sdSphere(pos, vec3(-8.0, 2.0 + 20.0 * sin(iTime), -1), 5.6);
     sdfValue = sdSmoothUnion(sdfValue,sdSphere(pos, vec3(8.0, 8.0 + 12.0 * cos(iTime), 3), 5.6), 3.0f);
     sdfValue = sdSmoothUnion(sdfValue, sdSphere(pos, vec3(5.0 * sin(iTime), 3.0, 0), 8.0), 3.0) + 7.0 * fbm_4(fbmCoord / 3.2);
@@ -364,8 +365,8 @@ vec3 Diffuse(in vec3 normal, in vec3 lightVec, in vec3 diffuse)
 
 vec3 GetAmbientLight()
 {
-	return 1.2 * vec3(0.03, 0.018, 0.018);
-	// return 0.5 * vec3(1.0, 1.0, 1.0);
+	// return 1.2 * vec3(0.03, 0.018, 0.018);
+	return 0.5 * vec3(1.0, 1.0, 1.0);
 }
 
 float GetFogDensity(vec3 position, float sdfDistance)
@@ -466,43 +467,43 @@ vec3 Render( in vec3 rayOrigin, in vec3 rayDirection)
     vec3 volumetricColor = vec3(0.0f);
     if(volumeDepth > 0.0)
     {
-        const vec3 volumeAlbedo = vec3(0.8);
-        const float marchSize = 0.6f * MARCH_MULTIPLIER;
-        float distanceInVolume = 0.0f;
-        float signedDistance = 0.0;
-        for(int i = 0; i < MAX_VOLUME_MARCH_STEPS; i++)
-        {
-            volumeDepth += max(marchSize, signedDistance);
-            if(volumeDepth > depth || opaqueVisiblity < ABSORPTION_CUTOFF) break;
+        // const vec3 volumeAlbedo = vec3(0.8);
+        // const float marchSize = 0.6f * MARCH_MULTIPLIER;
+        // float distanceInVolume = 0.0f;
+        // float signedDistance = 0.0;
+        // for(int i = 0; i < MAX_VOLUME_MARCH_STEPS; i++)
+        // {
+        //     volumeDepth += max(marchSize, signedDistance);
+        //     if(volumeDepth > depth || opaqueVisiblity < ABSORPTION_CUTOFF) break;
             
-            vec3 position = rayOrigin + volumeDepth*rayDirection;
+            // vec3 position = rayOrigin + volumeDepth*rayDirection;
 
-            signedDistance = QueryVolumetricDistanceField(position);
-			if(signedDistance < 0.0f)
-            {
-                distanceInVolume += marchSize;
-                float previousOpaqueVisiblity = opaqueVisiblity;
-                opaqueVisiblity *= BeerLambert(ABSORPTION_COEFFICIENT * GetFogDensity(position, signedDistance), marchSize);
-                float absorptionFromMarch = previousOpaqueVisiblity - opaqueVisiblity;
+            // signedDistance = QueryVolumetricDistanceField(position);
+			// if(signedDistance < 0.0f)
+            // {
+                // distanceInVolume += marchSize;
+                // float previousOpaqueVisiblity = opaqueVisiblity;
+                // opaqueVisiblity *= BeerLambert(ABSORPTION_COEFFICIENT * GetFogDensity(position, signedDistance), marchSize);
+                // float absorptionFromMarch = previousOpaqueVisiblity - opaqueVisiblity;
+                // float absorptionFromMarch = 1.0;
                 
-                for(int lightIndex = 0; lightIndex < NUM_LIGHTS; lightIndex++)
-    			{
-                    float lightVolumeDepth = 0.0f;
-                    vec3 lightDirection = (GetLight(lightIndex).Position - position);
-                    float lightDistance = length(lightDirection);
-                    lightDirection /= lightDistance;
+                // for(int lightIndex = 0; lightIndex < NUM_LIGHTS; lightIndex++)
+    			// {
+                //     float lightVolumeDepth = 0.0f;
+                //     vec3 lightDirection = (GetLight(lightIndex).Position - position);
+                //     float lightDistance = length(lightDirection);
+                //     lightDirection /= lightDistance;
                     
-                    vec3 lightColor = GetLight(lightIndex).LightColor * GetLightAttenuation(lightDistance); 
-                    if(IsColorInsignificant(lightColor)) continue;
+                //     vec3 lightColor = GetLight(lightIndex).LightColor * GetLightAttenuation(lightDistance); 
+                //     if(IsColorInsignificant(lightColor)) continue;
                     
-                    const float lightMarchSize = 0.65f * MARCH_MULTIPLIER;
-                    float lightVisiblity = GetLightVisiblity(position, lightDirection, lightDistance, MAX_VOLUME_LIGHT_MARCH_STEPS, lightMarchSize); 
-                    volumetricColor += absorptionFromMarch * lightVisiblity * volumeAlbedo * lightColor;
-                    // volumetricColor += absorptionFromMarch * volumeAlbedo * lightColor;
-                }
-                volumetricColor += absorptionFromMarch * volumeAlbedo * GetAmbientLight();
-            }
-        }
+                //     const float lightMarchSize = 0.65f * MARCH_MULTIPLIER;
+                //     float lightVisiblity = GetLightVisiblity(position, lightDirection, lightDistance, MAX_VOLUME_LIGHT_MARCH_STEPS, lightMarchSize); 
+                //     volumetricColor += absorptionFromMarch * lightVisiblity * volumeAlbedo * lightColor;
+                // }
+                // volumetricColor += absorptionFromMarch * volumeAlbedo * GetAmbientLight();
+            // }
+        // }
     }
     
     if( materialID != INVALID_MATERIAL_ID && opaqueVisiblity > ABSORPTION_CUTOFF)

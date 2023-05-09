@@ -482,6 +482,7 @@ vec3 Diffuse(in vec3 normal, in vec3 lightVec, in vec3 diffuse)
 vec3 GetAmbientLight()
 {
 	return 1.2 * vec3(0.03, 0.018, 0.018);
+	// return 0.5 * vec3(1.0, 1.0, 1.0);
 }
 
 float GetFogDensity(vec3 position, float sdfDistance)
@@ -614,6 +615,7 @@ vec3 Render( in vec3 rayOrigin, in vec3 rayDirection)
                     const float lightMarchSize = 0.65f * MARCH_MULTIPLIER;
                     float lightVisiblity = GetLightVisiblity(position, lightDirection, lightDistance, MAX_VOLUME_LIGHT_MARCH_STEPS, lightMarchSize); 
                     volumetricColor += absorptionFromMarch * lightVisiblity * volumeAlbedo * lightColor;
+                    // volumetricColor += absorptionFromMarch * volumeAlbedo * lightColor;
                 }
                 volumetricColor += absorptionFromMarch * volumeAlbedo * GetAmbientLight();
             }
@@ -850,9 +852,9 @@ void main() {
 
     let renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, context: gl, preserveDrawingBuffer: true });
     let resolution = new THREE.Vector3();
-    let mouse = new THREE.Vector4(-1, -1, -1, -1);
+    let mouse = new THREE.Vector4(223, 309, -416, -490);
     let mouseButton = new THREE.Vector4(0, 0, 0, 0);
-    let normalizedMouse = new THREE.Vector2(0, 0);
+    let normalizedMouse = new THREE.Vector2(0.208955223880597, 1);
     let frameCounter = 0;
 
     // Audio Init
