@@ -27,6 +27,7 @@
 #iChannel0 "file://D:/_workspace/shadertoy/resource/cloud/iChannel0.png"
 #iChannel1 "file://D:/_workspace/shadertoy/resource/cloud/iChannel1.png"
 #iChannel2 "file://D:/_workspace/shadertoy/resource/cloud/iChannel2.bin"
+#iChannel2::Type "CubeMap"
 
 // 0: one 3d texture lookup
 // 1: two 2d texture lookups with hardware interpolation
@@ -58,7 +59,7 @@ float noise( in vec3 x )
 
 #if NOISE_METHOD==0
     x = p + f;
-    return textureLod(iChannel2,(x.xy+0.5)/32.0,0.0).x*2.0-1.0;
+    return textureLod(iChannel2,(x+0.5)/32.0,0.0).x*2.0-1.0;
 #endif
 #if NOISE_METHOD==1
 	vec2 uv = (p.xy+vec2(37.0,239.0)*p.z) + f.xy;
