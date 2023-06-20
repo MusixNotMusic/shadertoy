@@ -66,10 +66,10 @@ TODO:	Dynamic atlas size.
 #define STEPS_LIGHT 10
 
 //------- Uncomment to display noise texture atlas
-//#define NOISE_ATLAS
+// #define NOISE_ATLAS
 
 //------- Uncomment for coloured cloud
-//#define COLOUR_SCATTERING
+// #define COLOUR_SCATTERING
 
 //------- Uncomment to move the sun
 //#define ANIMATE_SUN
