@@ -51,10 +51,10 @@ TODO:	Dynamic atlas size.
 //------- Uncomment for fewer ray marching steps and better performance
 // #define FAST
 
-#iChannel0 "file://D:/_workspace/shadertoy/src/vcloud/bufferA.glsl"
-#iChannel1 "file://D:/_workspace/shadertoy/src/vcloud/bufferB.glsl"
-#iChannel2 "file://D:/_workspace/shadertoy/src/vcloud/bufferC.glsl"
-#iChannel3 "file://D:/_workspace/shadertoy/resource/vcnoise.png"
+#iChannel0 "file://./bufferA.glsl"
+#iChannel1 "file://./bufferB.glsl"
+#iChannel2 "file://./bufferC.glsl"
+#iChannel3 "file://../../resource/vcnoise.png"
 
 
 #ifdef FAST
@@ -72,10 +72,10 @@ TODO:	Dynamic atlas size.
 // #define COLOUR_SCATTERING
 
 //------- Uncomment to move the sun
-//#define ANIMATE_SUN
+// #define ANIMATE_SUN
 
 //------- Uncomment for coloured light
-//#define COLOUR_LIGHT
+// #define COLOUR_LIGHT
 
 //------- Offset the sample point by blue noise every frame to get rid of banding
 #define DITHERING

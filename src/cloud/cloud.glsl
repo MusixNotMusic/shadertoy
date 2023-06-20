@@ -24,9 +24,9 @@
 // by using this directional derivative technique:
 //
 // https://iquilezles.org/articles/derivative
-#iChannel0 "file://D:/_workspace/shadertoy/resource/cloud/iChannel0.png"
-#iChannel1 "file://D:/_workspace/shadertoy/resource/cloud/iChannel1.png"
-#iChannel2 "file://D:/_workspace/shadertoy/resource/cloud/iChannel2.bin"
+#iChannel0 "file://../../resource/cloud/iChannel0.png"
+#iChannel1 "file://../../resource/cloud/iChannel1.png"
+#iChannel2 "file://../../resource/cloud/iChannel2.bin"
 #iChannel2::Type "CubeMap"
 
 // 0: one 3d texture lookup

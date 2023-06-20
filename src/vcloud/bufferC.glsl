@@ -1,6 +1,6 @@
 //Track mouse movement and resolution change between frames and set camera position.
 
-#iChannel0 "file://D:/_workspace/shadertoy/src/vcloud/bufferB.glsl"
+#iChannel0 "file://./bufferB.glsl"
 #iChannel1 "self"
 //Simple cloud map to define where clouds occur.
 
