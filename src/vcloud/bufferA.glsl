@@ -8,12 +8,14 @@
 
 #iChannel0 "self"
 
+#include 'common.glsl'
+
 #define PERLIN_WORLEY 0
 #define WORLEY 1
 
-float remap(float x, float low1, float high1, float low2, float high2){
-	return low2 + (x - low1) * (high2 - low2) / (high1 - low1);
-}
+// float remap(float x, float low1, float high1, float low2, float high2){
+// 	return low2 + (x - low1) * (high2 - low2) / (high1 - low1);
+// }
 
 vec3 modulo(vec3 m, float n){
   return mod(mod(m, n) + n, n);

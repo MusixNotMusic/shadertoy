@@ -1,13 +1,10 @@
 //Track mouse movement and resolution change between frames and set camera position.
 #iChannel0 "self"
+#include 'common.glsl'
 
 #define PI 3.14159
 #define EPS 1e-4
 #define CAMERA_DIST 180.0
-
-float modulo(float m, float n){
-  return mod(mod(m, n) + n, n);
-}
 
 void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
     

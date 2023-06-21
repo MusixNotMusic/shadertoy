@@ -56,6 +56,7 @@ TODO:	Dynamic atlas size.
 #iChannel2 "file://./bufferC.glsl"
 #iChannel3 "file://../../resource/vcnoise.png"
 
+#include 'common.glsl'
 
 #ifdef FAST
 	#define STEPS_PRIMARY 16
@@ -112,9 +113,9 @@ const float cloudEnd = CLOUD_EXTENT;
 const vec3 minCorner = vec3(-CLOUD_EXTENT, cloudStart, -CLOUD_EXTENT);
 const vec3 maxCorner = vec3(CLOUD_EXTENT, cloudEnd, CLOUD_EXTENT);
 
-float remap(float x, float low1, float high1, float low2, float high2){
-	return low2 + (x - low1) * (high2 - low2) / (high1 - low1);
-}
+// float remap(float x, float low1, float high1, float low2, float high2){
+// 	return low2 + (x - low1) * (high2 - low2) / (high1 - low1);
+// }
 
 vec3 rayDirection(float fieldOfView, vec2 fragCoord) {
     vec2 xy = fragCoord - iResolution.xy / 2.0;

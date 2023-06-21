@@ -20,9 +20,11 @@
     SOFTWARE.
 */
 
-float saturate(float x){
-	return clamp(x, 0.0, 1.0);
-}
+// #define SCENE_SCALE (10.)
+
+// float saturate(float x){
+// 	return clamp(x, 0.0, 1.0);
+// }
 
 float remap(float x, float low1, float high1, float low2, float high2){
 	return low2 + (x - low1) * (high2 - low2) / (high1 - low1);
