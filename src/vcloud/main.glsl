@@ -226,7 +226,7 @@ float clouds(vec3 p, out float cloudHeight, bool sampleNoise){
     	return 0.0;
     }
 
-    cloudHeight = saturate((p.y - cloudStart)/(cloudEnd-cloudStart));
+    cloudHeight = clamp((p.y - cloudStart)/(cloudEnd-cloudStart), 0.0, 1.0);
     float cloud = getCloudMap(p);
 
     // If there are no clouds, exit early.
@@ -238,8 +238,8 @@ float clouds(vec3 p, out float cloudHeight, bool sampleNoise){
     float height = pow(cloud, 0.75);
     
     // Round the bottom and top of the clouds. From "Real-time rendering of volumetric clouds". 
-    cloud *= saturate(remap(cloudHeight, 0.0, 0.25 * (1.0-cloud), 0.0, 1.0))
-           * saturate(remap(cloudHeight, 0.75 * height, height, 1.0, 0.0));
+    cloud *= clamp(remap(cloudHeight, 0.0, 0.25 * (1.0-cloud), 0.0, 1.0), 0.0, 1.0)
+           * clamp(remap(cloudHeight, 0.75 * height, height, 1.0, 0.0), 0.0, 1.0);
 
     // Animate main shape.
     p += vec3(2.0 * iTime, 0.0, iTime);
@@ -248,7 +248,7 @@ float clouds(vec3 p, out float cloudHeight, bool sampleNoise){
     float shape = getPerlinWorleyNoise(shapeSize * p);
 
     // Carve away density from cloud based on noise.
-    cloud = saturate(remap(cloud, shapeStrength * (shape), 1.0, 0.0, 1.0));
+    cloud = clamp(remap(cloud, shapeStrength * (shape), 1.0, 0.0, 1.0), 0.0, 1.0);
 
     // Early exit from empty space
     if(cloud <= 0.0){
@@ -262,7 +262,7 @@ float clouds(vec3 p, out float cloudHeight, bool sampleNoise){
     float detail = getPerlinWorleyNoise(detailSize * p);
     
 	// Carve away detail based on the noise
-	cloud = saturate(remap(cloud, detailStrength * (detail), 1.0, 0.0, 1.0));
+	cloud = clamp(remap(cloud, detailStrength * (detail), 1.0, 0.0, 1.0), 0.0, 1.0);
     return densityMultiplier * cloud;
 }
 

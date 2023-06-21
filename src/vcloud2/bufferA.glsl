@@ -11,9 +11,10 @@
 // 
 
 #iChannel0 'self'
-#iChannel1 'file://./bufferD.glsl'
 
 #include 'common.glsl'
+
+#define windDir vec3(cos(iTime / 200.0), -sin(iTime / 50.0), 0.0)
 
 bool resolutionChanged() {
     return floor(texelFetch(iChannel1, ivec2(0), 0).r) != floor(iResolution.x);
@@ -22,7 +23,7 @@ bool resolutionChanged() {
 void mainImage( out vec4 fragColor, in vec2 fragCoord ) { 
     if (resolutionChanged()) {
         vec2 vUV = fragCoord / iResolution.xy;
-        vec3 coord = fract(vec3(vUV + vec2(.2,0.62), .5));
+        vec3 coord = fract(vec3(vUV + vec2(.2,0.62), .5) + windDir);
         
         vec4 col = vec4(1);
         
