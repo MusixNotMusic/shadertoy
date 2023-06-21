@@ -89,7 +89,7 @@ vec2 reprojectPos( in vec3 pos, in vec2 resolution, in sampler2D storage ) {
 //
 vec3 getSkyColor(vec3 rd) {
     float sundot = clamp(dot(rd,SUN_DIR),0.0,1.0);
-	vec3 col = vec3(0.2,0.5,0.85)*1.1 - max(rd.y,0.01)*max(rd.y,0.01)*0.5;
+	  vec3 col = vec3(0.2,0.5,0.85)*1.1 - max(rd.y,0.01)*max(rd.y,0.01)*0.5;
     col = mix( col, 0.85*vec3(0.7,0.75,0.85), pow(1.0-max(rd.y,0.0), 6.0) );
 
     col += 0.25*vec3(1.0,0.7,0.4)*pow( sundot,5.0 );

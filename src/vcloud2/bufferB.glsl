@@ -11,7 +11,7 @@
 // 
 
 #iChannel0 'self'
-#iChannel1 'file://./bufferD.glsl'
+// #iChannel1 'file://./bufferD.glsl'
 
 #include 'common.glsl'
 
