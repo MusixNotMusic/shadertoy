@@ -280,7 +280,10 @@ vec3 multipleOctaves(float extinction, float mu, float stepL){
     float a = 1.0;
     // Contribution
     float b = 1.0;
-    // Phase attenuation
+    // Phase attenuation   
+
+
+    
     float c = 1.0;
     
     float phase;
