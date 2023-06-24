@@ -43,7 +43,7 @@ vec3 noised( in vec2 x ) {
 
 const mat2 m2 = mat2(1.6,-1.2,1.2,1.6);
 
-float terrainMap( in vec2 x, const int OCTAVES ) {
+float terrainMapB( in vec2 x, const int OCTAVES ) {
 	vec2 p = x*(MOUNTAIN_HW_RATIO*SCENE_SCALE);
     float s = mix(1., smoothstep(.0,.4, abs(p.y)), .75);
     
@@ -60,7 +60,7 @@ float terrainMap( in vec2 x, const int OCTAVES ) {
 	return s*a*(MOUNTAIN_HEIGHT*INV_SCENE_SCALE*.5);
 }
 
-float terrainMapB( in vec2 x, const int OCTAVES ) {
+float terrainMap( in vec2 x, const int OCTAVES ) {
 	vec2 p = x*(MOUNTAIN_HW_RATIO*SCENE_SCALE);
     float s = mix(1., smoothstep(.0,.4, abs(p.y)), .75);
     

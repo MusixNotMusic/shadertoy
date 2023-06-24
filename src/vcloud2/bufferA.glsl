@@ -38,7 +38,8 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
             	-1.;
         col.b = 1. - tilableVoronoi( coord + 0.5, 6, 9. );
         
-	    fragColor = col;
+	    // fragColor = col;
+	    fragColor = vec4(coord, 1.0);
     } else {
         fragColor = texelFetch(iChannel0, ivec2(fragCoord), 0);
     }
