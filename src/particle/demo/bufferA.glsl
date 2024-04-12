@@ -1,5 +1,6 @@
 #iChannel0 'self'
 
+
 // semi-Newton integration of Biot-Savart velocity field induced by vortex particles
 // inspired from http://evasion.imag.fr/~Fabrice.Neyret/demos/JS/Vort.html
 
@@ -60,41 +61,9 @@ void mainImage( out vec4 O, vec2 U )
     }
     else if (pass==0) return;
     
-    // if pass 1: compute tmp pos(v) at half time-step
-    // if pass 2: compute new pos using velocities(tmppos) and ref pos
 
-    // ----- evaluate forces (Newton, for gravity) 
-    //         or directly velocity (Biot-Savart, for vorticity)
-    vec2 F = vec2(0);
-    int di = (TWOPASS==1) ? (2-pass)*N : 0; // cross source state
- 
-#if CYCLE == 1         // forces through cycling world
-    for (int cx=-1; cx<2; cx++)
-      for (int cy=-1; cy<2; cy++)
-#endif
-    for (int j=0; j<N; j++)
-        for (int i=0; i<N; i++) 
-        {
-            float w = W(i,j);
-            // we could optimize by not considering markers, but the main cost is not there.
-            vec2 d = tex(i+di,j).xy - O.xy;
-#if CYCLE == 1
-            d += iResolution.xy*vec2(cx,cy);
-#elif CYCLE == 2     // cycling world : clipped to most contributive window
-            d = ( fract(.5+d/iResolution.xy) -.5)*iResolution.xy;
-#endif
-            float l = dot(d,d);
-         // if (l>1e-5) F += d /l;                   // Newton, for gravity 
-            if (l>1e-5) F += vec2(-d.y,d.x) * w /l;  // Biot-Savart, for vorticity
-            }
-    
- // O.zw += 1e-1*F*dt;    // v += sum(F).dt   for Newton
-    O.zw = STRENGTH*F;    // direct eval of V (stored as F) for Biot-Savart
-    if (pass==2)   // increment from ref pos, not pass 1 pos
-        O.xy = refState(U).xy;
-    //  O.xy = texture(iChannel0, (U+vec2(0,2)*Nf)/iResolution.xy).xy; // from backup
-    O.xy += O.zw*dt;      // x += v.dt
+
+    O.xy += O.zw * dt * 100.0;      // x += v.dt
     O.xy = mod(O.xy, iResolution.xy);
-  
 }
 

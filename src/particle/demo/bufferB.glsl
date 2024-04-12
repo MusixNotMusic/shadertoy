@@ -5,7 +5,7 @@
 // display with motion blur   ( no use of parallelism :-( )
 // indeed, this is the slowest part. :-( Any idea for optimising ?
 
-#define N 20     // N*N partics. to be changed in all tabs !
+#define N 20    // N*N partics. to be changed in all tabs !
 #define Nf float(N)
 #define Rp 16.
 #define Rm 2.
